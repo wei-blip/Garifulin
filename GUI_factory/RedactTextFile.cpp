@@ -11,22 +11,19 @@ std::string RedactFile(std::string& path) {
 
 // удаляем и вставляем новое слово
 std::string DeleteAndPasteNewWord(std::string str, std::string deletedWord, std::string pastedWord) {
-	int count = 0;
 	int j = 0, i = 0;
-	bool stepIn = true;
-	for (; (j != deletedWord.size()) || (i < str.size()); i++)
+	for (; i < str.size(); i++)
 	{
 		// находим совпадение
-		if ((*(deletedWord.begin() + j) == *(str.begin() + i)) && stepIn)
-		{
+		// если буквы совпадают то j инкрементируется
+		// иначе j обнуляется
+		if ( (*(deletedWord.begin() + j) == *(str.begin() + i)) ) {
 			j++;
-			count++;
+		}
+		else {
+			j = 0;
 		}
 
-		if (count != j)
-		{
-			stepIn = not stepIn;
-		}
 	}
 	
 	str.erase(i - j, j);

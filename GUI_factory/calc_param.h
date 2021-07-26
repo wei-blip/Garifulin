@@ -25,4 +25,4 @@ struct output_parameters_s
 input_parameters_s CreateInputStruct(std::vector<std::vector<double>> &coordinates);
 output_parameters_s CreateOutputStruture(input_parameters_s* iparam, std::string& path);
 std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path);
-std::string Run(char* path);
+std::string Run(const char* path);

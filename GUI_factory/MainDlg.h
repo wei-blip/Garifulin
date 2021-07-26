@@ -19,6 +19,5 @@ public:
 private:
 	EditBox* pointA;
 	EditBox* pointB;
-	EditBox* m_path;
 };
 

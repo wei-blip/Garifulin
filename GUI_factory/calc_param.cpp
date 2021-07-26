@@ -84,21 +84,38 @@ std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path) {
 	return coordinates;
 }
 
-std::string Run(char* path) {
+std::string Run(const char* path) {
+	// копируем полученный путь в новую строку для того чтобы его преобразовать в выходной путь
 	int i = 0;
 	std::string s;
 	while (*(path + i)) {
-		s += *(path + i);
-		i++;
+		s += *(path + i++);
 	}
+
+	// формируем выходной путь
 	std::string output_path = RedactFile(s);
+
+	// формируем вектор с высотами и дистанциями
 	std::vector < std::vector < double >> coordinates = CreateVectorDistanceHeght(output_path);
+
 	input_parameters_s iparam = CreateInputStruct(coordinates);
 	output_parameters_s oparam = CreateOutputStruture(&iparam, output_path);
+
 	output_parameters_s oparam_copy = oparam;	// чтобы не сломать выходные данные
+
 	std::sort(oparam_copy.closing_angle.begin(), oparam_copy.closing_angle.end());
+
+	// проверяем структуру на пустоту и если она пустая возвращаем пустую строку
+	if (oparam_copy.closing_angle.empty() ||
+		oparam_copy.curvature_earth.empty() ||
+		oparam_copy.dheight.empty() ||
+		oparam_copy.height_visible.empty() ) {
+		return "";
+	}
 	std::string min_angle = std::to_string(oparam_copy.closing_angle[0]);
 	std::string max_angle = std::to_string(oparam_copy.closing_angle[oparam_copy.closing_angle.size() - 1]);
+	
+	// для вывода в окно с максимальными и минимальными углами закрытия
 	std::string result_str = "Максимальный угол закрытия:\t" + max_angle + "\n"
 		+ "Минимальный угол закрытия:\t" + min_angle;
 	return result_str;
