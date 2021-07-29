@@ -54,7 +54,7 @@ std::string DeleteComma(std::string& path) {
 	std::ofstream fout;
 	char ch = '\n';
 	std::string data;
-	std::ifstream fin(path, std::ios_base::in);
+	std::ifstream fin(path, std::ios_base::in); // отсюда считываем
 	std::string new_path = DeleteAndPasteNewWord(path, "input_data.txt", "output_data.txt");	//	формируем путь к выходному файлу
 	if (fin.is_open())
 	{
@@ -89,4 +89,12 @@ void NumberCellSettings(std::ofstream& stream, int width_cell, int precision) {
 
 void WordCellSettings(std::ofstream& stream, int width_cell) {
 	stream.width(width_cell);
+}
+
+std::string CreateString(char* CharPtr) {
+	std::string str;
+	while (*(CharPtr)) {
+		str += *(CharPtr++);
+	}
+	return str;
 }

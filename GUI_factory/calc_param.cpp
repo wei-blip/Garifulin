@@ -30,9 +30,11 @@ input_parameters_s CreateInputStruct(std::vector<std::vector<double>>& coordinat
 	return param;
 }
 
-output_parameters_s CreateOutputStruture(input_parameters_s* iparam, std::string& path) {
+output_parameters_s CreateOutputStruture(input_parameters_s* iparam, std::string& path,
+	char* posA, char* posB) {
 	output_parameters_s oparam;
 	std::ofstream fout(path, std::ios_base::trunc | std::ios_base::out); // открываем файл для записи предварительно отчистив его
+	fout << CreateString(posA) << " - " << CreateString(posB) << "\n";
 	CellSettings(fout, myWORD, strlen("поправка на кривизну земли\t"));
 	fout << "Поправка на кривизну земли";
 	CellSettings(fout, myWORD, strlen("поправка на кривизну земли\t"));
@@ -84,7 +86,7 @@ std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path) {
 	return coordinates;
 }
 
-std::string Run(const char* path) {
+std::string Run(const char* path, char* posA, char* posB) {
 	// копируем полученный путь в новую строку для того чтобы его преобразовать в выходной путь
 	int i = 0;
 	std::string s;
@@ -99,7 +101,7 @@ std::string Run(const char* path) {
 	std::vector < std::vector < double >> coordinates = CreateVectorDistanceHeght(output_path);
 
 	input_parameters_s iparam = CreateInputStruct(coordinates);
-	output_parameters_s oparam = CreateOutputStruture(&iparam, output_path);
+	output_parameters_s oparam = CreateOutputStruture(&iparam, output_path, posA, posB);
 
 	output_parameters_s oparam_copy = oparam;	// чтобы не сломать выходные данные
 
