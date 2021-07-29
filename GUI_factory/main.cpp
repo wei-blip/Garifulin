@@ -14,7 +14,6 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 	}
 	
 	MSG msg;
-
 	MainDlg* Main = new MainDlg(hInstance, MAKEINTRESOURCE(IDD_DIALOG1), NULL);
 	Main->Show(SW_SHOW);
 
@@ -23,3 +22,13 @@ int CALLBACK WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLi
 		DispatchMessage(&msg);
 	}
 }
+
+//BOOL FileOpenDlg(HWND hWnd, PSTR pstrFileName, PSTR pstrTitleName = NULL)
+//{
+//	ofn.hwndOwner = hWnd;
+//	ofn.lpstrFile = pstrFileName;
+//	ofn.lpstrFileTitle = pstrTitleName;
+//	ofn.Flags = OFN_HIDEREADONLY | OFN_CREATEPROMPT;
+//
+//	return GetOpenFileName(&ofn);
+//}
