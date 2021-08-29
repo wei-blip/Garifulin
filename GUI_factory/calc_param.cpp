@@ -88,14 +88,11 @@ std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path) {
 
 std::string Run(const char* path, char* posA, char* posB) {
 	// копируем полученный путь в новую строку для того чтобы его преобразовать в выходной путь
-	int i = 0;
-	std::string s;
-	while (*(path + i)) {
-		s += *(path + i++);
-	}
+	std::string ipath = CreateString(path);
 
+	RedactFile NewOutputPath(ipath);
 	// формируем выходной путь
-	std::string output_path = RedactFile(s);
+	std::string output_path = NewOutputPath.Run();
 
 	// формируем вектор с высотами и дистанциями
 	std::vector < std::vector < double >> coordinates = CreateVectorDistanceHeght(output_path);
@@ -118,7 +115,7 @@ std::string Run(const char* path, char* posA, char* posB) {
 	std::string max_angle = std::to_string(oparam_copy.closing_angle[oparam_copy.closing_angle.size() - 1]);
 	
 	// для вывода в окно с максимальными и минимальными углами закрытия
-	std::string result_str = "Максимальный угол закрытия:\t" + max_angle + "\n"
-		+ "Минимальный угол закрытия:\t" + min_angle;
+	std::string result_str =  "Максимальный угол закрытия:\t" + max_angle + "\n"
+							+ "Минимальный угол закрытия:\t" + min_angle;
 	return result_str;
 }

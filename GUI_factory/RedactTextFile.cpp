@@ -3,15 +3,35 @@
 void NumberCellSettings(std::ofstream& stream, int width_cell, int precision);
 void WordCellSettings(std::ofstream& stream, int width_cell);
 
-// редактируем файл
-std::string RedactFile(std::string& path) {
-	PasteStopWord(path);
-	return DeleteComma(path);
+std::string RedactFile::GetInPath() { 
+	return this->ipath_m;
+}
+
+std::string RedactFile::GetOutPath() {
+	return this->opath_m;
+}
+
+void RedactFile::CommaToSpace() {
+	std::string data;
+	if (inDataFile_m.is_open())
+	{
+		outDataFile_m.open(opath_m);
+		while (!inDataFile_m.eof()) {							// считываем пока не дойдём до конца файла
+			getline(inDataFile_m, data, '\n');
+			if (data.find(',') != std::string::npos)			// удаляем запятую и заменяем её на пробел
+			{
+				data.replace(data.find(','), 1, " ");
+			}
+			outDataFile_m << data << std::endl;
+		}
+		outDataFile_m.close();
+		inDataFile_m.close();
+	}
 }
 
 // удаляем и вставляем новое слово
-std::string DeleteAndPasteNewWord(std::string str, std::string deletedWord, std::string pastedWord) {
-	int j = 0, i = 0;
+std::string RedactFile::StrChange(std::string str, std::string deletedWord, std::string pastedWord) {
+	long int j = 0, i = 0;
 	for (; i < str.size(); i++)
 	{
 		// находим совпадение
@@ -35,42 +55,12 @@ std::string DeleteAndPasteNewWord(std::string str, std::string deletedWord, std:
 	return str;
 }
 
-// записываем в конец стоп - слово
-void PasteStopWord(std::string& path) {
-	std::ifstream fin(path);				// открыли файл с текстом
-	if (fin.is_open())
-	{
-		char ch = '\n';
-		std::string data;
-		std::string end = "\nendl";
-		std::ofstream fout(path, std::ios_base::app);	// записываем в конец стоп - слово
-		fout << end;
-		fout.close();
-	}
-}
-
 // удаляем запятую и возвращаем путь к выходному файлу
-std::string DeleteComma(std::string& path) {
-	std::ofstream fout;
-	char ch = '\n';
-	std::string data;
-	std::ifstream fin(path, std::ios_base::in); // отсюда считываем
-	std::string new_path = DeleteAndPasteNewWord(path, "input_data.txt", "output_data.txt");	//	формируем путь к выходному файлу
-	if (fin.is_open())
-	{
-		fout.open(new_path);
-		while (data != "endl") {							// считываем пока не встретим стоп - слово
-			getline(fin, data, ch);
-			if (data.find(',') != std::string::npos)		// удаляем запятую
-			{
-				data.replace(data.find(','), 1, " ");
-			}
-			fout << data << std::endl;
-		}
-		fout.close();
-		fin.close();
-	}
-	return new_path;
+std::string RedactFile::Run() {
+	inDataFile_m.open(ipath_m, std::ios_base::in); // отсюда считываем строку из которой будем удалять запятую
+	opath_m = StrChange(ipath_m, "input_data.txt", "output_data.txt");	//	формируем путь к выходному файлу
+	CommaToSpace();
+	return opath_m;
 }
 
 void CellSettings(std::ofstream& stream, int cell_data, int width_cell, int precision ) {
@@ -91,7 +81,7 @@ void WordCellSettings(std::ofstream& stream, int width_cell) {
 	stream.width(width_cell);
 }
 
-std::string CreateString(char* CharPtr) {
+std::string CreateString(const char* CharPtr) {
 	std::string str;
 	while (*(CharPtr)) {
 		str += *(CharPtr++);
