@@ -22,8 +22,21 @@ struct output_parameters_s
 	std::vector<double> closing_angle;
 };
 
-input_parameters_s CreateInputStruct(std::vector<std::vector<double>> &coordinates);
-output_parameters_s CreateOutputStruture(input_parameters_s* iparam, std::string& path,
-	char* posA, char* posB);
-std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path);
-std::string Run(const char* path, char* posA, char* posB);
+class CalcParam {
+public:
+	CalcParam(const char* path, char* posA, char* posB);
+	std::string PrintAngles();
+private:
+	input_parameters_s iparam_m;
+	output_parameters_s oparam_m;
+	std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path);
+	void CreateInputStruct(std::vector<std::vector<double>>& coordinates);
+	void CreateOutputStruct(std::string& path, char* posA, char* posB);
+};
+
+//
+//input_parameters_s CreateInputStruct(std::vector<std::vector<double>> &coordinates);
+//output_parameters_s CreateOutputStruture(input_parameters_s* iparam, std::string& path,
+//	char* posA, char* posB);
+//std::vector<std::vector<double>> CreateVectorDistanceHeght(std::string& path);
+//std::string Run(const char* path, char* posA, char* posB);
